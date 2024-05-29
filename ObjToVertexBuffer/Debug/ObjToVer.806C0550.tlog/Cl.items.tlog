@@ -1,0 +1,10 @@
+F:\Projects\TuP_Abgabe\src\app\main.cpp;F:\Projects\TuP_Abgabe\ObjToVertexBuffer\Debug\main.obj
+F:\Projects\TuP_Abgabe\src\app\ViewerWindow.cpp;F:\Projects\TuP_Abgabe\ObjToVertexBuffer\Debug\ViewerWindow.obj
+F:\Projects\TuP_Abgabe\src\core\ArcBall.cpp;F:\Projects\TuP_Abgabe\ObjToVertexBuffer\Debug\ArcBall.obj
+F:\Projects\TuP_Abgabe\src\core\GlutWindow.cpp;F:\Projects\TuP_Abgabe\ObjToVertexBuffer\Debug\GlutWindow.obj
+F:\Projects\TuP_Abgabe\src\mathutil\CMatrix.cpp;F:\Projects\TuP_Abgabe\ObjToVertexBuffer\Debug\CMatrix.obj
+F:\Projects\TuP_Abgabe\src\mathutil\CPosition.cpp;F:\Projects\TuP_Abgabe\ObjToVertexBuffer\Debug\CPosition.obj
+F:\Projects\TuP_Abgabe\src\mathutil\CQuaternion.cpp;F:\Projects\TuP_Abgabe\ObjToVertexBuffer\Debug\CQuaternion.obj
+F:\Projects\TuP_Abgabe\src\mathutil\CVector.cpp;F:\Projects\TuP_Abgabe\ObjToVertexBuffer\Debug\CVector.obj
+F:\Projects\TuP_Abgabe\src\meshConverter\Mesh3D.cpp;F:\Projects\TuP_Abgabe\ObjToVertexBuffer\Debug\Mesh3D.obj
+F:\Projects\TuP_Abgabe\src\meshConverter\Mesh3D_render.cpp;F:\Projects\TuP_Abgabe\ObjToVertexBuffer\Debug\Mesh3D_render.obj
