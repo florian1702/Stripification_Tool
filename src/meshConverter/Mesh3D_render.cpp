@@ -70,7 +70,7 @@ void Mesh3D::draw() {
 	// Strips zeichnen
 	int counter = 0;
 	srand(2); // Seed initialisieren
-	std::cout << "\r" << std::setw(5) << std::right << strip_amount_limit << std::setw(19) << " Strips werden gezeichnet";
+
 	for (const auto& strip : strips) {
 		if (counter == strip_amount_limit)
 		{

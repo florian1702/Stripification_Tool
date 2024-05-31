@@ -2,7 +2,6 @@
 #include "core/GlutWindow.h"
 #include "app/globaldefs.h"
 
-class Mesh3D;
 
 class ViewerWindow :
 	public CGlutWindow
@@ -10,15 +9,14 @@ class ViewerWindow :
 	
 
 public:
-	ViewerWindow(const char*);
+	ViewerWindow();
 	virtual ~ViewerWindow(void);
 
 	//virtual void keyEvent(unsigned char key,int x,int y);
 	void renderGeometry();
 
-	void keyEvent(unsigned char key,int x,int y);
+	void renderGui();
 
-protected:
-	Mesh3D *mesh;
+	void keyEvent(unsigned char key,int x,int y);
 
 };

@@ -25,13 +25,13 @@ CGlutWindow::CGlutWindow(void)
 
 
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_MULTISAMPLE);
-	glutInitWindowSize(800, 600);
+	glutInitWindowSize(1200, 800);
 	glutInitWindowPosition(0, 0);
 	glutCreateWindow("Stripification Tool");
 
 	m_dFieldOfView = 30.0;
-	m_nWidth = 800.f;
-	m_nHeight = 600.f;
+	m_nWidth = 1200.f;
+	m_nHeight = 800.f;
 
 	m_dSceneRadius = 15.0;
 	m_vecCameraPosition.set(0.0, 0.0, 0.0, 1.0);
@@ -116,16 +116,11 @@ void CGlutWindow::renderFrame() {
 
 	renderGeometry();
 
-	ImGui::Begin("Stripification Tool");
-	ImGui::Text("Hello World!");
-	ImGui::End();
-
-	ImGui::Render();
-
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	renderGui();
 
 	glutSwapBuffers();
 }
+
 
 void CGlutWindow::resize(int width, int height) {
 	m_nWidth = width;
@@ -328,6 +323,10 @@ void CGlutWindow::initializeGL()
 
 void CGlutWindow::renderGeometry() {
 
+}
+
+void CGlutWindow::renderGui(){
+	
 }
 
 bool CGlutWindow::handleButtonEvent(int button, int state, int x, int y) {

@@ -19,16 +19,24 @@ public:
 	int strip_amount_limit = 3;
 	int getStripsCount();
 
+	vector<vector<unsigned short>> getStrips() {
+		return strips;
+	}
+
+	vector<Triangle> getFaces() {
+		return faces;
+	}
+
+	vector<Vertex> getVertices() {
+		return vertices;
+	}
+
 protected:
 	vector<Position> positions;
-	vector<Normal> normals;
-	vector<TexCoord> texCoords;
 	vector<Vertex> vertices;
 	vector<Triangle> faces;
 
 	void processPosition(vector<string>& c);
-	void processTexCoord(vector<string>& c);
-	void processNormal(vector<string>& c);
 	void processFace(vector<string>& c);
 	vector<string> splitString(string& str, char delimiter);
 	unsigned short indexOfVertex(string vs);
@@ -46,7 +54,7 @@ protected:
 	map<string, unsigned short> vertexHashMap;
 	void processStrips();
 	size_t countUnprocessedNeighborTriangles(int targetIndex);
-	std::vector<int> fetchUnprocessedNeighborTriangles(int targetIndex);
+	vector<int> fetchUnprocessedNeighborTriangles(int targetIndex);
 	bool compareByUnprocessedNeighborTrianglesCount(int a, int b);
 	void sortTriaglesByLeastUnprocessedNeighborCount(vector<int>& targetIndex);
 	void markTriagleAsProcessed(int targetIndex);

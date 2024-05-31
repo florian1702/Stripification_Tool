@@ -3,8 +3,13 @@
 #include "mathutil\CVector.h"
 #include "mathutil\CPosition.h"
 #include <windows.h>
+#include <vector>
+#include <string>
+#include <meshConverter/Mesh3D.h>
+#include <thread>
 
 class CArcBall;
+class Mesh3D;
 
 class CGlutWindow
 {
@@ -26,6 +31,7 @@ public:
 	};
 
 	virtual void renderFrame();
+	virtual void renderGui();
 	virtual void idle();
 	virtual void resize(int width, int height);
 	virtual void keyEvent(unsigned char key, int x, int y);
@@ -56,5 +62,13 @@ protected:
 	int m_nInteractionMode;
 
 	void initializeGL();
+
+	Mesh3D* mesh;
+
+	//ComboBox Imgui
+	char* filename;
+	char* items[5] = { "Cow", "Cube", "Sphere", "Suzanne", "Teapot"};
+	int selectedIndex = 0;
+	bool isLoading = false;
 
 };

@@ -24,8 +24,6 @@ Mesh3D::~Mesh3D(void)
 
 void Mesh3D::readOBJ(const char* filename) {
 
-	std::cout << "Loading OBJ-File " << filename << " ..." << "\n";
-
 	ifstream stream;
 	stream.open(filename);
 
@@ -50,30 +48,9 @@ void Mesh3D::readOBJ(const char* filename) {
 		}
 	}
 
-	std::cout << "OBJ-File loaded" << "\n";
-	std::cout << "Starting Stripification process..." << "\n";
 	processStrips();
-	std::cout << "Stripification finished" << "\n";
-
-	cout << "Created " << vertices.size() << " unique vertices " << endl;
-	cout << "Created " << faces.size() << " triangular faces" << endl;
-
-	cout << "\n";
-	cout << "Created " << strips.size() << " strips" << "\n";
-
-	int total_count_strip_vertices = 0;
-
-	for (const auto& strip : strips) {
-		total_count_strip_vertices += strip.size();
-	}
-
-	cout << "Sending " << total_count_strip_vertices << " vertices to GPU instead of " << faces.size() * 3 << "\n";
-	cout << "Saved " << (1.0F - (static_cast<float>(total_count_strip_vertices) / (faces.size() * 3))) * 100 << "% (" << (faces.size() * 3) - total_count_strip_vertices << " vertices)\n\n";
 
 	positions.clear();
-	texCoords.clear();
-	normals.clear();
-
 }
 
 vector<string> Mesh3D::splitString(string& str, char delimiter)
@@ -94,7 +71,6 @@ bool Mesh3D::isProcessedTriangle(int index)
 }
 
 void Mesh3D::processPosition(vector<string>& c) {
-	//cout << "Position "<< positions.size() << ": " << c[1] << "," << c[2] << "," << c[3] << "                        \r";	
 	positions.push_back(Position(
 		(float)atof(c[1].c_str()),
 		(float)atof(c[2].c_str()),
@@ -134,16 +110,11 @@ void Mesh3D::processStrips() {
 	initTriagleNeighbors();
 
 	int active_triangle = -1;
-	cout << "\n";
 	// "Wenn es keine Dreiecke mehr zu verarbeiten gibt, beende den Algorithmus"
 	while (processed_triagles_indices.size() < triangle_indices.size()) {
-		std::cout << "%\r"
-			<< processed_triagles_indices.size() << "\/"
-			<< triangle_indices.size() << std::setw(20)
-			<< "| " << std::setw(3) << (processed_triagles_indices.size() * 100) / triangle_indices.size();
+		
 		//  Sortiere triangle_indices nach wenigsten Nachbarn
 		sortTriaglesByLeastUnprocessedNeighborCount(triangle_indices);
-
 
 		// "Finde das Dreieck active_triangle mit den wenigsten Nachbarn 
 		// (wenn mehrere existieren, wähle ein beliebiges)"
@@ -242,12 +213,7 @@ void Mesh3D::processStrips() {
 		}
 		strips.push_back(strip);
 	}
-	// Lade status in  der Konsole
-	std::cout << "%\r"
-		<< processed_triagles_indices.size() << "\/"
-		<< triangle_indices.size() << std::setw(20)
-		<< "| " << std::setw(3) << (processed_triagles_indices.size() * 100) / triangle_indices.size();
-	std::cout << endl;
+
 	strip_amount_limit = strips.size();
 }
 
