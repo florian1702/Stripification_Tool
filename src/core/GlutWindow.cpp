@@ -49,17 +49,16 @@ CGlutWindow::CGlutWindow(void)
 	m_bExternalMouseHandling = false;
 
 	initializeGL();
-
-	
 }
 
 CGlutWindow::~CGlutWindow(void)
 {
+	//--> Florian
 	// Cleanup
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGLUT_Shutdown();
 	ImGui::DestroyContext();
-
+	//<--
 	if (NULL != m_pCameraArcball) delete m_pCameraArcball;
 	if (NULL != m_pLightArcball)  delete m_pLightArcball;
 }
@@ -73,10 +72,12 @@ void CGlutWindow::renderFrame() {
 	glClearColor(.5, .5, 1., 1.);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	//--> Florian
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGLUT_NewFrame();
 	ImGui::NewFrame();
 	ImGuiIO& io = ImGui::GetIO();
+	//<--
 
 	GLfloat fTop, fRight, fNear, fFar;
 
@@ -116,7 +117,9 @@ void CGlutWindow::renderFrame() {
 
 	renderGeometry();
 
+	//--> Florian
 	renderGui();
+	//<--
 
 	glutSwapBuffers();
 }
@@ -320,13 +323,8 @@ void CGlutWindow::initializeGL()
 
 }
 
-
 void CGlutWindow::renderGeometry() {
 
-}
-
-void CGlutWindow::renderGui(){
-	
 }
 
 bool CGlutWindow::handleButtonEvent(int button, int state, int x, int y) {
@@ -336,3 +334,9 @@ bool CGlutWindow::handleButtonEvent(int button, int state, int x, int y) {
 bool CGlutWindow::handleMoveEvent(int x, int y) {
 	return false;
 }
+
+//--> Florian
+void CGlutWindow::renderGui(){
+	
+}
+//<--

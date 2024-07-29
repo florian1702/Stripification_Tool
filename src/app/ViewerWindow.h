@@ -6,7 +6,6 @@
 class ViewerWindow :
 	public CGlutWindow
 {
-	
 
 public:
 	ViewerWindow();
@@ -15,8 +14,9 @@ public:
 	//virtual void keyEvent(unsigned char key,int x,int y);
 	void renderGeometry();
 
-	void renderGui();
-
 	void keyEvent(unsigned char key,int x,int y);
 
+	// --> Florian
+	void renderGui();
+	// <--
 };

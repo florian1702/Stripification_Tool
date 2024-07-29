@@ -15,7 +15,8 @@ public:
 
 	void readOBJ(const char* filename);
 	void draw();
-
+	
+	//--> Florian
 	int strip_amount_limit = 3;
 	int getStripsCount();
 
@@ -30,6 +31,7 @@ public:
 	vector<Vertex> getVertices() {
 		return vertices;
 	}
+	//<--
 
 protected:
 	vector<Position> positions;
@@ -38,8 +40,10 @@ protected:
 
 	void processPosition(vector<string>& c);
 	void processFace(vector<string>& c);
+
 	vector<string> splitString(string& str, char delimiter);
 	unsigned short indexOfVertex(string vs);
+
 	void createVertexBuffer();
 	void createIndexBuffer();
 	bool initialized;
@@ -47,6 +51,7 @@ protected:
 	unsigned int iboID;
 	int numPrimitives;
 
+	//--> Florian
 	bool inited = false;
 	vector<vector<unsigned short>> strips;
 	unordered_set<int> processed_triagles_indices;
@@ -61,5 +66,6 @@ protected:
 	void initTriagleNeighbors();
 	void addTriagleToStrip(const int targetIndex, vector<unsigned short>& strip);
 	bool isProcessedTriangle(int index);
+	//<--
 };
 

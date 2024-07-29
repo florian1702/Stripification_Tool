@@ -3,9 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <unordered_set>
 #include <algorithm>
-#include <iomanip>
 #include <cassert>
 
 using namespace std;
@@ -37,18 +35,21 @@ void Mesh3D::readOBJ(const char* filename) {
 		if (c[0].compare("v") == 0) {
 			processPosition(c);
 		}
+		//--> Florian Texturen und Normals werden nicht benötigt
 		else if (c[0].compare("vt") == 0) {
 			continue;
 		}
 		else if (c[0].compare("vn") == 0) {
 			continue;
 		}
+		//<--
 		else if (c[0].compare("f") == 0) {
 			processFace(c);
 		}
 	}
-
+	//--> Florian
 	processStrips();
+	//<--
 
 	positions.clear();
 }
@@ -63,11 +64,6 @@ vector<string> Mesh3D::splitString(string& str, char delimiter)
 		words.push_back(word);
 
 	return words;
-}
-
-bool Mesh3D::isProcessedTriangle(int index)
-{
-	return processed_triagles_indices.count(index) != 0;
 }
 
 void Mesh3D::processPosition(vector<string>& c) {
@@ -97,6 +93,43 @@ void Mesh3D::processFace(vector<string>& c) {
 	}
 
 }
+
+unsigned short Mesh3D::indexOfVertex(string vs) {
+
+	map<string, unsigned short> ::iterator it = vertexHashMap.find(vs);
+
+	unsigned int vertexIndex;
+
+	// check if the vertex already exists
+	if (it == vertexHashMap.end()) { // it's a new vertex
+
+		vector<string> indices = splitString(vs, '/');
+		int positionIndex = atoi(indices[0].c_str()) - 1;
+		int texCoordIndex = atoi(indices[1].c_str()) - 1;
+		int normalIndex = atoi(indices[2].c_str()) - 1;
+
+		Vertex newVertex(positions[positionIndex]);
+
+		vertexIndex = vertices.size();
+		vertices.push_back(newVertex);
+		vertexHashMap[vs] = vertexIndex;
+
+
+	}
+	else {
+		vertexIndex = vertexHashMap[vs];
+	}
+
+	return vertexIndex;
+}
+
+//--> Florian
+
+bool Mesh3D::isProcessedTriangle(int index)
+{
+	return processed_triagles_indices.count(index) != 0;
+}
+
 
 // Strips generieren
 void Mesh3D::processStrips() {
@@ -161,30 +194,9 @@ void Mesh3D::processStrips() {
 					int current_triangle_min_2deg_neighbors_count = -1;
 					size_t temp_count;
 
-					// Vergleich nach minimalen Wert eines Nachbarn zweiten Grades der Dreicke
-					//auto index_triangle_2deg_neighbors = triangle_neighbors_indices.at(neighbors[index]);
-					//if (!index_triangle_2deg_neighbors.empty()) {
-					//	auto index_triangle_min_2deg_neighbors_count_iterator = std::min_element(index_triangle_2deg_neighbors.begin(), index_triangle_2deg_neighbors.end(),
-					//		[&](int a, int b) {
-					//			return compareByUnprocessedNeighborTrianglesCount(a, b);
-					//		});
-					//	index_triangle_min_2deg_neighbors_count = countUnprocessedNeighborTriangles(*index_triangle_min_2deg_neighbors_count_iterator);
-					//}
-					//
-					//auto current_triangle_2deg_neighbors = triangle_neighbors_indices.at(unprocessed_triagle_index_least_neighbor);
-					//if (!current_triangle_2deg_neighbors.empty()) {
-					//	auto current_triangle_min_2deg_neighbors_count_iterator = std::min_element(current_triangle_2deg_neighbors.begin(), current_triangle_2deg_neighbors.end(),
-					//		[&](int a, int b) {
-					//			return compareByUnprocessedNeighborTrianglesCount(a, b);
-					//		});
-					//	current_triangle_min_2deg_neighbors_count = countUnprocessedNeighborTriangles(*current_triangle_min_2deg_neighbors_count_iterator);
-					//
-					//}
-					//
-					//if (index_triangle_min_2deg_neighbors_count < current_triangle_min_2deg_neighbors_count)
-					//	unprocessed_triagle_index_least_neighbor = neighbors[index];
-
-
+					// LNLN (least neighbour, least neighbour on tie)
+					// Original Heuristik: Wähle das Folge-Dreieck mit den wenigsten Nachbarn. 
+	
 					// Vergleich nach Summer aller Wert der Nachbarn zweiten Grades der Dreicke
 					if (countUnprocessedNeighborTriangles(neighbors[index])
 						== countUnprocessedNeighborTriangles(unprocessed_triagle_index_least_neighbor)) {
@@ -201,10 +213,8 @@ void Mesh3D::processStrips() {
 						if (index_vertex_min_2deg_neighbors_count < current_vertex_min_2deg_neighbors_count)
 							unprocessed_triagle_index_least_neighbor = neighbors[index];
 					}
-
+					
 				}
-
-
 			}
 
 			assert(unprocessed_triagle_index_least_neighbor != -1);
@@ -215,10 +225,6 @@ void Mesh3D::processStrips() {
 	}
 
 	strip_amount_limit = strips.size();
-}
-
-void processSecondDegreeNeighborsByMinimale() {
-
 }
 
 
@@ -325,32 +331,5 @@ void Mesh3D::addTriagleToStrip(const int targetIndex, std::vector<unsigned short
 	}
 	markTriagleAsProcessed(targetIndex);
 }
+//<--
 
-unsigned short Mesh3D::indexOfVertex(string vs) {
-
-	map<string, unsigned short> ::iterator it = vertexHashMap.find(vs);
-
-	unsigned int vertexIndex;
-
-	// check if the vertex already exists
-	if (it == vertexHashMap.end()) { // it's a new vertex
-
-		vector<string> indices = splitString(vs, '/');
-		int positionIndex = atoi(indices[0].c_str()) - 1;
-		int texCoordIndex = atoi(indices[1].c_str()) - 1;
-		int normalIndex = atoi(indices[2].c_str()) - 1;
-
-		Vertex newVertex(positions[positionIndex]);
-
-		vertexIndex = vertices.size();
-		vertices.push_back(newVertex);
-		vertexHashMap[vs] = vertexIndex;
-
-
-	}
-	else {
-		vertexIndex = vertexHashMap[vs];
-	}
-
-	return vertexIndex;
-}

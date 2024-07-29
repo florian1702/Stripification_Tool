@@ -23,7 +23,7 @@ void ViewerWindow::renderGeometry() {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     mesh->draw();
 }
-
+// --> Florian
 void ViewerWindow::renderGui()
 {
     if (isLoading) {
@@ -62,14 +62,6 @@ void ViewerWindow::renderGui()
                 }
                 ImGui::EndCombo();
             }
-        }
-
-        // Spacing
-        ImGui::Dummy(ImVec2(0.0f, 10.0f));
-
-        // Method Selection
-        if (ImGui::CollapsingHeader("Method", ImGuiTreeNodeFlags_DefaultOpen)) {
-            // Add method options here
         }
 
         // Spacing
@@ -145,3 +137,4 @@ void ViewerWindow::keyEvent(unsigned char key, int x, int y) {
         break;
     }
 }
+// <--

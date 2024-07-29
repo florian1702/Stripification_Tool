@@ -65,6 +65,7 @@ void Mesh3D::createIndexBuffer() {
 	delete[] indexBuffer;
 }
 
+// --> Florian
 void Mesh3D::draw() {
 
 	// Strips zeichnen
@@ -97,3 +98,5 @@ int Mesh3D::getStripsCount()
 {
 	return strips.size();
 }
+
+// <--
