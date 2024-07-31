@@ -1,9 +1,5 @@
 ﻿D:\Visual Studio\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (ObjToVertexBuffer.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  ViewerWindow.cpp
   main.cpp
   GlutWindow.cpp
-  Mesh3D.cpp
-F:\Projects\TuP_Abgabe\src\meshConverter\Mesh3D.cpp(195,13): warning C4101: 'temp_count': unreferenced local variable
-  Mesh3D_render.cpp
   Generating Code...
   ObjToVertexBuffer.vcxproj -> F:\Projects\TuP_Abgabe\bin\Stripification.exe

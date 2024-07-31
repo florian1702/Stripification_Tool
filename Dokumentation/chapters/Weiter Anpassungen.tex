@@ -1,0 +1,34 @@
+\chapter{Weitere Anpassungen}
+
+In diesem Kapitel werden die Änderungen an weiteren Code-Stellen erläutert.
+\\
+\begin{itemize}
+    \item 
+    In der \lstinline{main.cpp} wurden Anpassungen vorgenommen, um die
+    Callback-Funktionen für das Fenster-Management zu aktualisieren und die
+    Interaktionen zwischen ImGui und der Hauptfensterinstanz zu ermöglichen. Die
+    Funktionen \lstinline{reshape}, \lstinline{keyboard}, \lstinline{mouse} und
+    \lstinline{move} wurden so modifiziert, dass sie sowohl die
+    ImGui-spezifischen Anforderungen erfüllen als auch die entsprechenden
+    Methoden des ViewerWindow-Objekts aufrufen. 
+    \\
+    Zusätzlich wurde ImGui in der
+    \lstinline{main()}-Funktion initialisiert, indem die ImGui-Version
+    überprüft, ein ImGui-Kontext erstellt, das Dark-Theme angewendet und die
+    ImGui-Backends für GLUT und OpenGL3 konfiguriert wurden.
+    \\
+    \item 
+    In der \lstinline{CGlutWindow}-Klasse wurden spezifische Anpassungen für die Integration
+    von ImGui vorgenommen. Beim Destruktor der Klasse wurde der Code hinzugefügt, um ImGui-Ressourcen zu
+    bereinigen.
+    \\
+    Zusätzlich wurde in der \lstinline{renderFrame()}-Methode der Code ergänzt, um einen
+    neuen ImGui-Frame zu beginnen und zu rendern. 
+    \\
+    \item 
+    Alle Funktionalitäten zum Einlesen und Verarbeiten von Normalen und
+    Texturkoordinaten wurden entfernt, da sie nicht mehr benötigt werden.
+    \\
+    \item 
+    Entsprechende Header-Dateien wurden angepasst, um die neuen Funktionalitäten zu integrieren.
+\end{itemize}

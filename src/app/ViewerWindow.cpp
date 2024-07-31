@@ -23,7 +23,7 @@ void ViewerWindow::renderGeometry() {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     mesh->draw();
 }
-// --> Florian
+// <Florian>
 void ViewerWindow::renderGui()
 {
     if (isLoading) {
@@ -127,4 +127,4 @@ void ViewerWindow::keyEvent(unsigned char key, int x, int y) {
         break;
     }
 }
-// <--
+// </Florian>

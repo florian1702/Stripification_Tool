@@ -16,7 +16,7 @@ public:
 	void readOBJ(const char* filename);
 	void draw();
 	
-	//--> Florian
+	// <Florian>
 	// Gibt die maximale Anzahl von Stips zurück, die angezeigt werden
 	int strip_amount_limit;
 
@@ -37,7 +37,7 @@ public:
 	vector<Vertex> getVertices() {
 		return vertices;
 	}
-	//<--
+	// </Florian>
 
 protected:
 	vector<Position> positions;
@@ -57,7 +57,7 @@ protected:
 	unsigned int iboID;
 	int numPrimitives;
 
-	//--> Florian
+	// <Florian>
 	// Vektor zur Speicherung der Stips
 	vector<vector<unsigned short>> strips;
 
@@ -96,6 +96,6 @@ protected:
 
 	// Überprüft, ob ein Dreieck bereits verarbeitet wurde
 	bool isTriangleProcessed(int index);
-	//<--
+	// </Florian>
 };
 

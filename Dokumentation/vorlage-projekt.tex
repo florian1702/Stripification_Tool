@@ -40,22 +40,15 @@
 \pagestyle{myheadings}
 \setlength{\textheight}{1.1\textheight}
 
-\lstset{
-	basicstyle=\scriptsize\ttfamily,
-	commentstyle=\scriptsize\ttfamily\color{Gray},
-	identifierstyle=\scriptsize\ttfamily,
-	keywordstyle=\scriptsize\ttfamily,
-	stringstyle=\scriptsize\ttfamily,
-	tabsize=4,
-	numbers=left,
-	numberstyle=\tiny,
-	numberblanklines=false,
-	frame=single,
-	framesep=3mm,
-	framexleftmargin=7mm,
-	xleftmargin=10mm,
-	linewidth=144mm,
-	captionpos=b,
+\usepackage{xcolor}
+\lstset { %
+    language=C++,
+    backgroundcolor=\color{black!5}, % set backgroundcolor
+    basicstyle= \footnotesize \bfseries ,% basic font setting
+	keywordstyle=\color{blue}\bfseries ,
+	stringstyle=\color{red}\bfseries ,
+	commentstyle=\color{teal}\bfseries ,
+	morecomment=[l][\color{magenta}]{\#}
 }
 
 
@@ -66,56 +59,39 @@
 %------------------ Titelseite -------------------------------------------------
 \begin{document}
 
-\title{Titel der Arbeit auf Deutsch}
-\subtitle{English Title of the Thesis}
+\title{Stripification Tool}
+\subtitle{Projekt für das Modul Tool- und Pluginprogrammierung}
 
-\author{Vorname Nachname}
+\author{Florian Wößner}
 
-\supervisor{Titel Vorname Nachname}
+\supervisor{Prof. Dr. Christof Rezk-Salama}
 
-\address{Ort}
-\submitdate{DD.MM.YYYY}
+\address{Trier}
+\submitdate{31.08.2024}
 
 %------------------ Projektart -------------------------------------------------
 %\project{Bachelor-Projektarbeit}
-\project{Bachelor-Abschlussarbeit}
+%\project{Bachelor-Abschlussarbeit}
 %\project{Master-Projektstudium}
 %\project{Master-Abschlussarbeit}
 %\project{Seminar}
-%\project{Hausarbeit}
+\project{Hausarbeit}
 
 \mytitlepage
 
 %------------------ Vorwort, Kurzfassung, Verzeichnisse ------------------------
 \frontmatter
-\input{chapters/Vorwort}								% Vorwort (optional)
-\input{chapters/Kurzfassung}							% Kurzfassung/Abstract
 \tableofcontents										% Inhaltsverzeichnis
-\listoffigures											% Abbildungsverzeichnis (optional)
-\listoftables											% Tabellenverzeichnis (optional)
-\lstlistoflistings										% Listings (optional)
 
 
 %------------------ Kapitel ----------------------------------------------------
 \mainmatter
-\input{chapters/EinleitungProblemstellung}
-\input{chapters/WeitereKapitel}
-\input{chapters/Bausteine}
-\input{chapters/Beispiel}
+\input{chapters/Einleitung}
+\input{chapters/Triangle-to-Strip}
+\input{chapters/drawStrip}
+\input{chapters/Steuerung_GUI}
+\input{chapters/Weiter Anpassungen}
 \input{chapters/ZusammenfassungAusblick}
-
-
-%------------------ Literaturverzeichnis & Index -------------------------------
-\backmatter
-\bibliography{literatur}								% Literaturverzeichnis (literatur.bib)
-\printindex												% Index (optional)
-
-
-%------------------ Anhänge ----------------------------------------------------
-\begin{appendix}
-	\include{chapters/Glossar}							% Glossar (optional)
-	\include{chapters/Selbststaendigkeitserklaerung}	% Selbstständigkeitserklärung
-\end{appendix}
 
 
 \end{document}

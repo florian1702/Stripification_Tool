@@ -1,0 +1,43 @@
+\chapter{Einleitung}
+
+Das Ziel dieses Projekts ist es, nach dem Einlesen einer OBJ-Datei, die
+enthaltenen Dreiecke in Strips zusammenzufassen und diese effizient zu zeichnen.
+Die Technik der Stripification spielt dabei eine zentrale Rolle und bringt
+signifikante Vorteile mit sich.
+\\
+\\
+Stripification bezeichnet den Prozess, bei dem Dreiecke eines 3D-Modells in
+sogenannte Triangle Strips umgewandelt werden. Ein Triangle Strip ist eine
+Sequenz von Vertices, bei der jedes aufeinanderfolgende Dreieck durch Hinzufügen
+eines weiteren Vertex definiert wird. Diese Methode reduziert den Speicherbedarf
+für die Vertices auf der GPU, da weniger redundante Daten gespeichert werden
+müssen.Beispielsweise wird aus den einzelnen Dreiecken mit Vertices (1, 2, 3),
+(3, 2, 4) und (3, 4, 5) nach der Stripification der Strip (1, 2, 3, 4, 5). Dies
+bedeutet, dass die Vertices 3 und 4 nicht mehrfach gespeichert werden müssen,
+was die Effizienz der Speicher- und Renderprozesse erhöht. 
+\\
+\\
+Das Projekt baut auf dem bestehenden Projekt „ObjToVertexBuffer“ auf, das in
+einer Übungsstunde bearbeitet wurde. Dieses Ausgangsprojekt stellt bereits einen
+OBJ-Datei-Parser zum Einlesen von 3D-Modellen sowie einen fertigen Canvas mit
+den passenden Datenstrukturen bereit, was eine solide Basis für die
+Weiterentwicklung darstellt.
+\\
+\\
+Zur Erreichung der Projektziele wurden folgende Teilaufgaben definiert und
+umgesetzt:
+\begin{itemize}
+    \item Implementierung des Triangels-to-Strip Konverters
+    \item Implementierung des Strip-Zeichners
+    \item Allgemeine Anpassung des vorhandenen Codes
+    \item Implementierung der Steuerung und einer GUI
+\end{itemize}
+\hfil \break
+Die von mir ergänzten Codeabschnitte sind zur besseren Nachverfolgbarkeit mit
+Kommentaren markiert:
+
+\begin{lstlisting}
+    // <Florian>
+    ...
+    // </Florian>
+\end{lstlisting}

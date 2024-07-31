@@ -27,9 +27,9 @@ public:
 	};
 
 	virtual void renderFrame();
-	//--> Florian
+	// <Florian>
 	virtual void renderGui();
-	//<--
+	// </Florian>
 	virtual void idle();
 	virtual void resize(int width, int height);
 	virtual void keyEvent(unsigned char key, int x, int y);
@@ -61,11 +61,11 @@ protected:
 
 	void initializeGL();
 
-	//--> Florian
+	// <Florian>
 	Mesh3D* mesh;
 	char* items[5] = { "Cow", "Cube", "Sphere", "Suzanne", "Teapot"};
 	int selectedIndex = 0;
 	bool isLoading = false;
-	//<--
+	// </Florian>
 
 };

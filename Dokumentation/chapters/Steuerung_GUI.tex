@@ -1,0 +1,85 @@
+\chapter{Implementierung der Steuerung und der GUI}
+
+Die Methode \lstinline{renderGui()} und die Methode \lstinline{keyEvent(unsigned char key, int x, int y)} 
+sind zentrale Bestandteile der Benutzeroberfläche und Steuerung für das
+\lstinline{ViewerWindow}-Objekt. Im Folgenden wird detailliert beschrieben, wie diese
+Methoden implementiert sind und welche Aufgaben sie erfüllen.
+\\
+\\
+Die Methode \lstinline{renderGui()} ist verantwortlich für die Darstellung und
+Aktualisierung der grafischen Benutzeroberfläche unter Verwendung von
+ImGui, einer weit verbreiteten und leistungsfähigen Bibliothek für sofortige
+GUI-Entwicklung (siehe \href{https://github.com/ocornut/imgui}{ImGui}). Diese Methode verwaltet die Benutzeroberfläche,
+die dem Nutzer ermöglicht, verschiedene Interaktionen und Einstellungen
+vorzunehmen.
+\\
+\begin{enumerate}
+    \item \textbf{Ladefenster:}
+    \\
+    Wenn der \lstinline{isLoading}-Status auf true gesetzt ist, zeigt die Methode
+    ein Ladefenster an, das den Benutzer darüber informiert, dass eine Aktion (wie
+    das Laden eines neuen Meshes) im Gange ist. Dies geschieht durch den Aufruf von
+    \lstinline{ImGui::Begin()} mit entsprechenden Flags, um das Fenster ohne Titel, Größe und
+    Bewegung anzuzeigen. \lstinline{ImGui::Text()} wird verwendet, um den Ladehinweis
+    darzustellen.
+    \\
+    \item \textbf{Haupt-Benutzeroberfläche:} 
+    \\ 
+    Sobald \lstinline{isLoading} auf false
+    gesetzt ist, zeigt die Methode die Haupt-GUI an, die mehrere Abschnitte
+    enthält: 
+    \\
+    \begin{itemize}
+        \item 
+        Unter dem Abschnitt 'Control' wird dem Benutzer erklärt, welche
+        Tastenkombinationen zur Steuerung der Anzahl der anzuzeigenden Strips
+        verwendet werden können. Die Beschreibungen dieser Steuerungen werden
+        durch \lstinline{ImGui::Text()} bereitgestellt.
+        \\
+        \item 
+        Im Abschnitt 'Mesh' kann der Benutzer zwischen verschiedenen
+        Mesh-Dateien auswählen. Hierzu wird \lstinline{ImGui::BeginCombo()}
+        verwendet, um ein Dropdown-Menü zu erstellen. Die Auswahl wird durch
+        \lstinline{ImGui::Selectable()} ermöglicht, wobei die Variable
+        \lstinline{selectedIndex} die Auswahl speichert. \\
+        \item 
+        Im Abschnitt 'Info' werden verschiedene Informationen über das aktuelle
+        Mesh angezeigt. Dazu gehören die Anzahl der einzigartigen Vertices, der
+        Dreiecksflächen und der Strips sowie die Anzahl und Einsparungen von
+        Vertices, die an die GPU gesendet wurden. Berechnungen zur Anzahl der
+        gesparten Vertices werden durchgeführt, und die Ergebnisse werden
+        mittels \lstinline{ImGui::Text()} angezeigt. 
+        \\
+        \item 
+        Ein Button mit der Beschriftung 'Process' ermöglicht das
+        Laden eines neuen Meshes. Beim Klicken auf diesen Button wird der Status
+        \lstinline{isLoading} auf true gesetzt und ein neuer Thread gestartet, der das Mesh
+        aus einer .obj-Datei lädt. Der alte Mesh wird durch das neue ersetzt,
+        und \lstinline{isLoading} wird auf false zurückgesetzt, sobald der Ladevorgang
+        abgeschlossen ist.
+    \end{itemize} 
+    \hfil \break
+    \item \textbf{Rendering und Abschluss:} 
+    \\ 
+    Nach der Erstellung und Aktualisierung der GUI wird \lstinline{ImGui::Render()}
+    aufgerufen, um die GUI zu rendern, und \lstinline{ImGui_ImplOpenGL3_RenderDrawData()}
+    wird verwendet, um die gerenderten GUI-Daten mit OpenGL anzuzeigen.
+\end{enumerate}
+\hfil \break
+Die Methode \lstinline{keyEvent(unsigned char key, int x, int y)} wurde angepasst, um
+Tastatureingaben zu verarbeiten und entsprechende Änderungen in der Anzeige der
+Strips vorzunehmen. Der Parameter \lstinline{key} gibt die gedrückte Taste an, und basierend
+auf diesem Wert wird eine der folgenden Aktionen ausgeführt:
+\\
+\begin{itemize}
+    \item Wenn die Taste '1' gedrückt wird, wird die Anzahl der anzuzeigenden Strips
+    um eins reduziert, vorausgesetzt, die Anzahl ist nicht bereits auf 0 reduziert.
+    \\
+    \item Bei Drücken der Taste '2' wird die Anzahl der anzuzeigenden Strips um eins
+    erhöht, sofern sie nicht bereits die maximale Anzahl der verfügbaren Strips
+    erreicht hat.
+    \\
+    \item Wenn die Taste '3' gedrückt wird, wird entweder die Anzahl
+    der anzuzeigenden Strips auf 0 gesetzt (was alle Strips ausblendet) oder auf die
+    Gesamtanzahl der verfügbaren Strips, um alle anzuzeigen.
+\end{itemize}

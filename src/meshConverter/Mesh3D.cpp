@@ -35,21 +35,23 @@ void Mesh3D::readOBJ(const char* filename) {
 		if (c[0].compare("v") == 0) {
 			processPosition(c);
 		}
-		//--> Florian Texturen und Normals werden nicht benötigt
+		// <Florian> 
+		// Texturen und Normals werden nicht benötigt
 		else if (c[0].compare("vt") == 0) {
 			continue;
 		}
 		else if (c[0].compare("vn") == 0) {
 			continue;
 		}
-		//<--
+		// </Florian>
 		else if (c[0].compare("f") == 0) {
 			processFace(c);
 		}
 	}
-	//--> Florian Verarbeite die Strips
+	// <Florian> 
+	// Verarbeite die Strips
 	generateStrips();
-	//<--
+	// </Florian>
 
 	positions.clear();
 }
@@ -123,7 +125,7 @@ unsigned short Mesh3D::indexOfVertex(string vs) {
 	return vertexIndex;
 }
 
-//--> Florian
+// <Florian>
 // Überprüft, ob ein Dreieck bereits verarbeitet wurde
 bool Mesh3D::isTriangleProcessed(int index)
 {
@@ -322,5 +324,5 @@ void Mesh3D::addTriagleToStrip(const int targetIndex, std::vector<unsigned short
 	}
 	markTriagleAsProcessed(targetIndex);
 }
-//<--
+// </Florian>
 

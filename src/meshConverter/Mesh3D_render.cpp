@@ -65,7 +65,7 @@ void Mesh3D::createIndexBuffer() {
 	delete[] indexBuffer;
 }
 
-// --> Florian
+// <Florian>
 void Mesh3D::draw() {
 	// Initialisiert den Zufallszahlengenerator mit einem festen Seed
 	srand(0); //Wichtig damit die Farben bei jedem Aufruf gleich sind
@@ -100,4 +100,4 @@ int Mesh3D::getStripsCount() {
 }
 
 
-// <--
+// </Florian>

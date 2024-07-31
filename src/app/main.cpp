@@ -14,14 +14,14 @@ CGlutWindow* g_pMainWindow = 0;
 void display(void)										{ g_pMainWindow->renderFrame();  }
 void idle(void)											{ g_pMainWindow->idle(); }
 
-// --> Florian
+// <Florian>
 // Callback-Funktionen mussten angepasst werden,
 // sodass Benutzerinteraktionen sowohl von ImGui als auch von der Hauptfensterinstanz verarbeitet werden können.
 void reshape(int width, int height)						{ ImGui_ImplGLUT_ReshapeFunc(width, height);  g_pMainWindow->resize(width, height); }
 void keyboard(unsigned char key, int x, int y)			{ ImGui_ImplGLUT_KeyboardFunc(key, x, y); g_pMainWindow->keyEvent(key, x, y); }
 void mouse(int button, int state, int x, int y)			{ ImGui_ImplGLUT_MouseFunc(button, state, x, y); g_pMainWindow->mouseButtonEvent(button, state, x, y); }
 void move(int x, int y)									{ ImGui_ImplGLUT_MotionFunc(x, y); g_pMainWindow->mouseMoveEvent(x, y); }
-// <--
+// </Florian>
 
 int main(int argc, char* argv[])
 {
@@ -38,14 +38,14 @@ int main(int argc, char* argv[])
 	glutMotionFunc(move);
 	glutIdleFunc(idle);
 
-	// --> Florian
+	// <Florian>
 	// Initialisierung von ImGui und Setup
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGui::StyleColorsDark();
 	ImGui_ImplGLUT_Init();
 	ImGui_ImplOpenGL3_Init();
-	// <--
+	// </Florian>
 
 	glutMainLoop();
 

@@ -53,12 +53,12 @@ CGlutWindow::CGlutWindow(void)
 
 CGlutWindow::~CGlutWindow(void)
 {
-	//--> Florian
+	// <Florian>
 	// Bereinige ImGui-Ressourcen
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGLUT_Shutdown();
 	ImGui::DestroyContext();
-	//<--
+	// </Florian>
 	if (NULL != m_pCameraArcball) delete m_pCameraArcball;
 	if (NULL != m_pLightArcball)  delete m_pLightArcball;
 }
@@ -69,15 +69,15 @@ void CGlutWindow::renderFrame() {
 	float dAspectRatio = m_nWidth / m_nHeight;
 
 	// The usual OpenGL stuff to clear the screen and set up viewing.
-	glClearColor(.5, .5, 1., 1.);
+	glClearColor(0.2, 0.2, 0.2, 1.);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	//--> Florian
+	// <Florian>
 	// Beginne einen neuen ImGui-Frame für OpenGL3 und GLUT
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGLUT_NewFrame();
 	ImGui::NewFrame();
-	//<--
+	// </Florian>
 
 	GLfloat fTop, fRight, fNear, fFar;
 
@@ -117,10 +117,10 @@ void CGlutWindow::renderFrame() {
 
 	renderGeometry();
 
-	//--> Florian
+	// <Florian>
 	// Beginne das Rendering der ImGui-Oberfläche
 	renderGui();
-	//<--
+	// </Florian>
 
 	glutSwapBuffers();
 }
@@ -336,8 +336,8 @@ bool CGlutWindow::handleMoveEvent(int x, int y) {
 	return false;
 }
 
-//--> Florian
+// <Florian>
 void CGlutWindow::renderGui(){
 	
 }
-//<--
+// </Florian>
