@@ -54,7 +54,7 @@ CGlutWindow::CGlutWindow(void)
 CGlutWindow::~CGlutWindow(void)
 {
 	//--> Florian
-	// Cleanup
+	// Bereinige ImGui-Ressourcen
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGLUT_Shutdown();
 	ImGui::DestroyContext();
@@ -73,10 +73,10 @@ void CGlutWindow::renderFrame() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//--> Florian
+	// Beginne einen neuen ImGui-Frame für OpenGL3 und GLUT
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGLUT_NewFrame();
 	ImGui::NewFrame();
-	ImGuiIO& io = ImGui::GetIO();
 	//<--
 
 	GLfloat fTop, fRight, fNear, fFar;
@@ -118,6 +118,7 @@ void CGlutWindow::renderFrame() {
 	renderGeometry();
 
 	//--> Florian
+	// Beginne das Rendering der ImGui-Oberfläche
 	renderGui();
 	//<--
 

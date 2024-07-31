@@ -17,17 +17,23 @@ public:
 	void draw();
 	
 	//--> Florian
-	int strip_amount_limit = 3;
+	// Gibt die maximale Anzahl von Stips zurück, die angezeigt werden
+	int strip_amount_limit;
+
+	// Gibt die Anzahl der generierten Stips zurück
 	int getStripsCount();
 
+	// Gibt die Liste der Stips zurück
 	vector<vector<unsigned short>> getStrips() {
 		return strips;
 	}
 
+	// Gibt die Liste der Dreiecke (Faces) zurück
 	vector<Triangle> getFaces() {
 		return faces;
 	}
 
+	// Gibt die Liste der Vertices zurück
 	vector<Vertex> getVertices() {
 		return vertices;
 	}
@@ -52,20 +58,44 @@ protected:
 	int numPrimitives;
 
 	//--> Florian
-	bool inited = false;
+	// Vektor zur Speicherung der Stips
 	vector<vector<unsigned short>> strips;
-	unordered_set<int> processed_triagles_indices;
-	map<int, vector<int>> triangle_neighbors_indices;
+
+	// Set zur Verfolgung bereits verarbeiteter Dreiecke
+	unordered_set<int> processedTriangles;
+
+	// Map zur Speicherung der Nachbar-Dreiecke für jedes Dreieck
+	map<int, vector<int>> triangleNeighbors;
+
+	// Map zum Hashing von Vertex-Strings auf ihre Indizes
 	map<string, unsigned short> vertexHashMap;
-	void processStrips();
-	size_t countUnprocessedNeighborTriangles(int targetIndex);
-	vector<int> fetchUnprocessedNeighborTriangles(int targetIndex);
-	bool compareByUnprocessedNeighborTrianglesCount(int a, int b);
-	void sortTriaglesByLeastUnprocessedNeighborCount(vector<int>& targetIndex);
+
+	// Generiert die Stips für das Mesh
+	void generateStrips();
+
+	// Gibt die Anzahl der noch nicht verarbeiteten Nachbar-Dreiecke eines bestimmten Dreiecks zurück
+	size_t countUnprocessedNeighbors(int targetIndex);
+
+	// Gibt eine Liste der noch nicht verarbeiteten Nachbar-Dreiecke eines bestimmten Dreiecks zurück
+	vector<int> getUnprocessedNeighbors(int targetIndex);
+
+	// Vergleichsfunktion zum Sortieren der Dreiecke nach der Anzahl der noch nicht verarbeiteten Nachbarn
+	bool compareNeighborCount(int a, int b);
+
+	// Sortiert die Indizes der Dreiecke nach der Anzahl der noch nicht verarbeiteten Nachbarn
+	void sortTrianglesByNeighborCount(vector<int>& targetIndex);
+
+	// Markiert ein Dreieck als verarbeitet
 	void markTriagleAsProcessed(int targetIndex);
+
+	// Initialisiert die Nachbar-Dreiecke für jedes Dreieck im Mesh
 	void initTriagleNeighbors();
+
+	// Fügt ein Dreieck zu einem Strip hinzu
 	void addTriagleToStrip(const int targetIndex, vector<unsigned short>& strip);
-	bool isProcessedTriangle(int index);
+
+	// Überprüft, ob ein Dreieck bereits verarbeitet wurde
+	bool isTriangleProcessed(int index);
 	//<--
 };
 

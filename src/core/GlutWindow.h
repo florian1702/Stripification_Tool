@@ -63,7 +63,6 @@ protected:
 
 	//--> Florian
 	Mesh3D* mesh;
-	char* filename;
 	char* items[5] = { "Cow", "Cube", "Sphere", "Suzanne", "Teapot"};
 	int selectedIndex = 0;
 	bool isLoading = false;

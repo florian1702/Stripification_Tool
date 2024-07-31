@@ -67,24 +67,25 @@ void Mesh3D::createIndexBuffer() {
 
 // --> Florian
 void Mesh3D::draw() {
+	// Initialisiert den Zufallszahlengenerator mit einem festen Seed
+	srand(0); //Wichtig damit die Farben bei jedem Aufruf gleich sind
 
-	// Strips zeichnen
 	int counter = 0;
-	srand(2); // Seed initialisieren
 
+	// Zeichne die Strips
 	for (const auto& strip : strips) {
-		if (counter == strip_amount_limit)
-		{
+		if (counter == strip_amount_limit) {
 			break;
 		}
-		float r = ((sin(static_cast<float>(rand())) + 1.0f) / 2.0f);
-		float g = ((sin(static_cast<float>(rand())) + 1.0f) / 2.0f);
-		float b = ((sin(static_cast<float>(rand())) + 1.0f) / 2.0f);
-		glColor3f(r, g, b);  // Setze die Farbe für alle Vertexen im Strip
-		glBegin(GL_TRIANGLE_STRIP);
 
-		for (const auto& index : strip)
-		{
+		// Generiere eine zufällige Farbe
+		float r = static_cast<float>(rand()) / RAND_MAX;
+		float g = static_cast<float>(rand()) / RAND_MAX;
+		float b = static_cast<float>(rand()) / RAND_MAX;
+		glColor3f(r, g, b);  // Setze die Farbe für alle Vertices im Strip
+
+		glBegin(GL_TRIANGLE_STRIP);
+		for (const auto& index : strip) {
 			const Vertex& currentVertex = vertices[index];
 			glVertex3f(currentVertex.px, currentVertex.py, currentVertex.pz);
 		}
@@ -94,9 +95,9 @@ void Mesh3D::draw() {
 	}
 }
 
-int Mesh3D::getStripsCount()
-{
+int Mesh3D::getStripsCount() {
 	return strips.size();
 }
+
 
 // <--

@@ -27,16 +27,13 @@ void ViewerWindow::renderGeometry() {
 void ViewerWindow::renderGui()
 {
     if (isLoading) {
-        // Show loading window
+        // Ladefenster anzeigen
         ImGui::Begin("Loading", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize);
         ImGui::Text("Loading, please wait ... ");
         ImGui::End();
-
-        // Draw a gray overlay
-        //ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(0, 0), ImGui::GetIO().DisplaySize, IM_COL32(0, 0, 0, 128));
     }
     else {
-        // Main UI
+        // Haupt-Benutzeroberfläche
         ImGui::Begin("Options");
 
         if (ImGui::CollapsingHeader("Control", ImGuiTreeNodeFlags_DefaultOpen)) {
@@ -45,10 +42,10 @@ void ViewerWindow::renderGui()
             ImGui::Text("Press 3 to display all or no stripes");
         }
 
-        // Spacing
+        // Abstand
         ImGui::Dummy(ImVec2(0.0f, 10.0f));
 
-        // Mesh Selection
+        // Auswahl des Meshes
         if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen)) {
             if (ImGui::BeginCombo("##combo", items[selectedIndex])) {
                 for (int n = 0; n < IM_ARRAYSIZE(items); n++) {
@@ -64,10 +61,10 @@ void ViewerWindow::renderGui()
             }
         }
 
-        // Spacing
+        // Abstand
         ImGui::Dummy(ImVec2(0.0f, 10.0f));
 
-        // Info Output
+        // Informationsausgabe
         if (ImGui::CollapsingHeader("Info", ImGuiTreeNodeFlags_DefaultOpen)) {
             ImGui::Text("Created %d unique vertices", mesh->getVertices().size());
             ImGui::Text("Created %d triangular faces", mesh->getFaces().size());
@@ -82,29 +79,28 @@ void ViewerWindow::renderGui()
             ImGui::Text("Saved %d vertices (%.2f %%)", (mesh->getFaces().size() * 3) - total_count_strip_vertices, (1.0F - (static_cast<float>(total_count_strip_vertices) / (mesh->getFaces().size() * 3))) * 100);
         }
 
-        // Spacing
+        // Abstand
         ImGui::Dummy(ImVec2(0.0f, 20.0f));
 
         if (ImGui::Button("Process")) {
             isLoading = true;
 
+            // Starte einen neuen Thread für das Laden des Meshes
             std::thread objThread([this]() {
                 std::string filename = std::string("input\\") + items[selectedIndex] + ".obj";
 
-                // Erzeuge ein neues Mesh-Objekt
+                // Erzeuge ein neues Mesh-Objekt und lese die .obj-Datei
                 Mesh3D* newMesh = new Mesh3D();
-
-                // Lese das .obj-Datei in das neue Mesh-Objekt
                 newMesh->readOBJ(filename.c_str());
 
-                // Lösche das alte Mesh-Objekt und weise das neue zu
+                // Ersetze das alte Mesh durch das neue
                 delete mesh;
                 mesh = newMesh;
 
-                isLoading = false; // Reset loading state
+                isLoading = false; // Ladezustand zurücksetzen
                 });
 
-            objThread.detach(); // Trenne den Thread vom Hauptthread
+            objThread.detach(); // Thread vom Hauptthread trennen
         }
 
         ImGui::End();
@@ -116,24 +112,18 @@ void ViewerWindow::renderGui()
 
 void ViewerWindow::keyEvent(unsigned char key, int x, int y) {
     switch (key) {
-    case '1':    // Ein Stip weniger anzeigen
+    case '1':    // Ein Strip weniger anzeigen
         if (mesh->strip_amount_limit != 0) {
             mesh->strip_amount_limit--;
         }
-        
         break;
-    case '2':    // Ein Stip mehr anzeigen
+    case '2':    // Ein Strip mehr anzeigen
         if (mesh->strip_amount_limit != mesh->getStripsCount()) {
             mesh->strip_amount_limit++;
         }
         break;
     case '3':    // Alle oder keine Stripes anzeigen
-        if (mesh->strip_amount_limit > 0) {
-            mesh->strip_amount_limit = 0;
-        }
-        else {
-            mesh->strip_amount_limit = mesh->getStripsCount();
-        }
+        mesh->strip_amount_limit = (mesh->strip_amount_limit > 0) ? 0 : mesh->getStripsCount();
         break;
     }
 }

@@ -13,7 +13,10 @@ CGlutWindow* g_pMainWindow = 0;
 
 void display(void)										{ g_pMainWindow->renderFrame();  }
 void idle(void)											{ g_pMainWindow->idle(); }
+
 // --> Florian
+// Callback-Funktionen mussten angepasst werden,
+// sodass Benutzerinteraktionen sowohl von ImGui als auch von der Hauptfensterinstanz verarbeitet werden können.
 void reshape(int width, int height)						{ ImGui_ImplGLUT_ReshapeFunc(width, height);  g_pMainWindow->resize(width, height); }
 void keyboard(unsigned char key, int x, int y)			{ ImGui_ImplGLUT_KeyboardFunc(key, x, y); g_pMainWindow->keyEvent(key, x, y); }
 void mouse(int button, int state, int x, int y)			{ ImGui_ImplGLUT_MouseFunc(button, state, x, y); g_pMainWindow->mouseButtonEvent(button, state, x, y); }
@@ -36,9 +39,9 @@ int main(int argc, char* argv[])
 	glutIdleFunc(idle);
 
 	// --> Florian
+	// Initialisierung von ImGui und Setup
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	ImGui::StyleColorsDark();
 	ImGui_ImplGLUT_Init();
 	ImGui_ImplOpenGL3_Init();

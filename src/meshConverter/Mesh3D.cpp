@@ -47,8 +47,8 @@ void Mesh3D::readOBJ(const char* filename) {
 			processFace(c);
 		}
 	}
-	//--> Florian
-	processStrips();
+	//--> Florian Verarbeite die Strips
+	generateStrips();
 	//<--
 
 	positions.clear();
@@ -124,15 +124,15 @@ unsigned short Mesh3D::indexOfVertex(string vs) {
 }
 
 //--> Florian
-
-bool Mesh3D::isProcessedTriangle(int index)
+// Überprüft, ob ein Dreieck bereits verarbeitet wurde
+bool Mesh3D::isTriangleProcessed(int index)
 {
-	return processed_triagles_indices.count(index) != 0;
+	return processedTriangles.count(index) != 0;
 }
 
 
-// Strips generieren
-void Mesh3D::processStrips() {
+// Generiert die Strip-Daten für das Mesh
+void Mesh3D::generateStrips() {
 
 	std::vector<int> triangle_indices;
 	// Generiere eine Liste mit Indices für Liste faces 
@@ -144,15 +144,15 @@ void Mesh3D::processStrips() {
 
 	int active_triangle = -1;
 	// "Wenn es keine Dreiecke mehr zu verarbeiten gibt, beende den Algorithmus"
-	while (processed_triagles_indices.size() < triangle_indices.size()) {
+	while (processedTriangles.size() < triangle_indices.size()) {
 		
 		//  Sortiere triangle_indices nach wenigsten Nachbarn
-		sortTriaglesByLeastUnprocessedNeighborCount(triangle_indices);
+		sortTrianglesByNeighborCount(triangle_indices);
 
 		// "Finde das Dreieck active_triangle mit den wenigsten Nachbarn 
 		// (wenn mehrere existieren, wähle ein beliebiges)"
 		auto it = std::find_if(triangle_indices.begin(), triangle_indices.end(), [&](int i) {
-			return !isProcessedTriangle(i);
+			return !isTriangleProcessed(i);
 			});
 		if (it != triangle_indices.end()) {
 			active_triangle = *it;
@@ -166,17 +166,17 @@ void Mesh3D::processStrips() {
 
 			// "Wenn es keine benachbarten Dreiecke mehr gibt, 
 			// gehe zu [der äußeren Schleife]"
-			if (countUnprocessedNeighborTriangles(active_triangle) == 0)
+			if (countUnprocessedNeighbors(active_triangle) == 0)
 				break;
 
 			// "Wähle ein benachbartes Dreieck mit den wenigsten Nachbarn"
-			std::vector<int>& neighbors = triangle_neighbors_indices.at(active_triangle);
-			sortTriaglesByLeastUnprocessedNeighborCount(neighbors);
+			std::vector<int>& neighbors = triangleNeighbors.at(active_triangle);
+			sortTrianglesByNeighborCount(neighbors);
 			int unprocessed_triagle_index_least_neighbor = -1;
 
 			unsigned int index = 0;
 			for (; index < neighbors.size(); index++) {
-				if (!isProcessedTriangle(neighbors[index])) {
+				if (!isTriangleProcessed(neighbors[index])) {
 					unprocessed_triagle_index_least_neighbor = neighbors[index];
 					index++;
 					break;
@@ -184,7 +184,7 @@ void Mesh3D::processStrips() {
 			}
 			for (; index < neighbors.size(); index++)
 			{
-				if (!isProcessedTriangle(neighbors[index])) {
+				if (!isTriangleProcessed(neighbors[index])) {
 
 					// "Wenn es mehrere Dreiecke gibt mit der gleichen Anzahl Nachbarn, 
 					// schaue einen Schritt in die Zukunft."
@@ -198,17 +198,17 @@ void Mesh3D::processStrips() {
 					// Original Heuristik: Wähle das Folge-Dreieck mit den wenigsten Nachbarn. 
 	
 					// Vergleich nach Summer aller Wert der Nachbarn zweiten Grades der Dreicke
-					if (countUnprocessedNeighborTriangles(neighbors[index])
-						== countUnprocessedNeighborTriangles(unprocessed_triagle_index_least_neighbor)) {
+					if (countUnprocessedNeighbors(neighbors[index])
+						== countUnprocessedNeighbors(unprocessed_triagle_index_least_neighbor)) {
 
 						int index_vertex_min_2deg_neighbors_count = 0;
 						int current_vertex_min_2deg_neighbors_count = 0;
 
-						for (auto index : triangle_neighbors_indices.at(neighbors[index]))
-							index_vertex_min_2deg_neighbors_count += countUnprocessedNeighborTriangles(index);
+						for (auto index : triangleNeighbors.at(neighbors[index]))
+							index_vertex_min_2deg_neighbors_count += countUnprocessedNeighbors(index);
 
-						for (auto index : triangle_neighbors_indices.at(unprocessed_triagle_index_least_neighbor))
-							current_vertex_min_2deg_neighbors_count += countUnprocessedNeighborTriangles(index);
+						for (auto index : triangleNeighbors.at(unprocessed_triagle_index_least_neighbor))
+							current_vertex_min_2deg_neighbors_count += countUnprocessedNeighbors(index);
 
 						if (index_vertex_min_2deg_neighbors_count < current_vertex_min_2deg_neighbors_count)
 							unprocessed_triagle_index_least_neighbor = neighbors[index];
@@ -228,16 +228,15 @@ void Mesh3D::processStrips() {
 }
 
 
-// Gibt die Anzahl der Nachbar-Dreiecke an, welche noch nicht behandelt wurden
-size_t Mesh3D::countUnprocessedNeighborTriangles(int targetIndex) {
-	int count = std::count_if(triangle_neighbors_indices.at(targetIndex).begin(), triangle_neighbors_indices.at(targetIndex).end(), [&](int i) {
-		return !isProcessedTriangle(i);
+// Gibt die Anzahl der noch nicht verarbeiteten Nachbar-Dreiecke eines bestimmten Dreiecks zurück
+size_t Mesh3D::countUnprocessedNeighbors(int targetIndex) {
+	return std::count_if(triangleNeighbors.at(targetIndex).begin(), triangleNeighbors.at(targetIndex).end(), [&](int i) {
+		return !isTriangleProcessed(i);
 		});
-	return count;
 }
 
-// Gibt ein Vektor mit den Indezes der Nachbar-Dreiecke eines bestimmten Dreiecks zurück
-std::vector<int> Mesh3D::fetchUnprocessedNeighborTriangles(int targetIndex) {
+// Gibt einen Vektor mit den Indizes der Nachbar-Dreiecke eines bestimmten Dreiecks zurück
+std::vector<int> Mesh3D::getUnprocessedNeighbors(int targetIndex) {
 	std::vector<int> neighbor_triangles_of_target_triagle;
 	for (unsigned short i = 0; i < faces.size(); ++i) {
 		// überspringe den Vergleich eines Dreiecks mit sich selbst
@@ -263,39 +262,31 @@ std::vector<int> Mesh3D::fetchUnprocessedNeighborTriangles(int targetIndex) {
 	return neighbor_triangles_of_target_triagle;
 }
 
-// Vergleichsfunktion zum Sortieren des Vektors basierend auf countUnprocessedNeighborTriangles
-bool Mesh3D::compareByUnprocessedNeighborTrianglesCount(int a, int b) {
-	return countUnprocessedNeighborTriangles(a) < countUnprocessedNeighborTriangles(b);
+// Vergleichsfunktion zum Sortieren von Dreiecken nach der Anzahl der noch nicht verarbeiteten Nachbarn
+bool Mesh3D::compareNeighborCount(int a, int b) {
+	return countUnprocessedNeighbors(a) < countUnprocessedNeighbors(b);
 }
 
-// Funktion zum sortieren
-void Mesh3D::sortTriaglesByLeastUnprocessedNeighborCount(std::vector<int>& triagles_indices) {
+// Sortiert einen Vektor von Dreiecks-Indizes basierend auf der Anzahl der noch nicht verarbeiteten Nachbarn
+void Mesh3D::sortTrianglesByNeighborCount(std::vector<int>& triagles_indices) {
 	std::sort(triagles_indices.begin(), triagles_indices.end(), [&](int a, int b) {
-		return compareByUnprocessedNeighborTrianglesCount(a, b);
+		return compareNeighborCount(a, b);
 		});
 }
 
-// Markiere Dreieck als verarbeitet, passe neighbor_triangles_indices an.
-void Mesh3D::markTriagleAsProcessed(int i) {
-	processed_triagles_indices.insert(i);
+// Markiert ein Dreieck als verarbeitet und aktualisiert die Nachbar-Daten
+void Mesh3D::markTriagleAsProcessed(int index) {
+	processedTriangles.insert(index);
 }
 
-
+// Initialisiert die Nachbarn für jedes Dreieck
 void Mesh3D::initTriagleNeighbors() {
-
-	// Konstruiere die Map
-	for (unsigned int i = 0; i < faces.size(); i++)
-		triangle_neighbors_indices[i] = std::vector<int>();
-
-	// Initialisiere die Map
 	for (unsigned int i = 0; i < faces.size(); i++) {
-		std::vector<int> fetched_neighbors = fetchUnprocessedNeighborTriangles(i);
-		for (int neighbor_index : fetched_neighbors) {
-			triangle_neighbors_indices.at(i).push_back(neighbor_index);
-		}
+		triangleNeighbors[i] = getUnprocessedNeighbors(i);
 	}
 }
 
+// Fügt ein Dreieck zu einem Strip hinzu und aktualisiert den Strip
 void Mesh3D::addTriagleToStrip(const int targetIndex, std::vector<unsigned short>& strip) {
 
 	const Triangle& currentTriangle = faces[targetIndex];

@@ -17,6 +17,7 @@ public:
 	void keyEvent(unsigned char key,int x,int y);
 
 	// --> Florian
+	// Methode zum Rendern der Benutzeroberfläche.
 	void renderGui();
 	// <--
 };
