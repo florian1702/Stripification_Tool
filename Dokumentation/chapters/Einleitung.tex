@@ -11,7 +11,7 @@ sogenannte Triangle Strips umgewandelt werden. Ein Triangle Strip ist eine
 Sequenz von Vertices, bei der jedes aufeinanderfolgende Dreieck durch Hinzufügen
 eines weiteren Vertex definiert wird. Diese Methode reduziert den Speicherbedarf
 für die Vertices auf der GPU, da weniger redundante Daten gespeichert werden
-müssen.Beispielsweise wird aus den einzelnen Dreiecken mit Vertices (1, 2, 3),
+müssen. Beispielsweise wird aus den einzelnen Dreiecken mit Vertices (1, 2, 3),
 (3, 2, 4) und (3, 4, 5) nach der Stripification der Strip (1, 2, 3, 4, 5). Dies
 bedeutet, dass die Vertices 3 und 4 nicht mehrfach gespeichert werden müssen,
 was die Effizienz der Speicher- und Renderprozesse erhöht. 

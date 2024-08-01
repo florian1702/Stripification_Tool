@@ -16,7 +16,7 @@ vorzunehmen.
 \begin{enumerate}
     \item \textbf{Ladefenster:}
     \\
-    Wenn der \lstinline{isLoading}-Status auf true gesetzt ist, zeigt die Methode
+    Wenn die Variable \lstinline{isLoading} auf true gesetzt ist, zeigt die Methode
     ein Ladefenster an, das den Benutzer darüber informiert, dass eine Aktion (wie
     das Laden eines neuen Meshes) im Gange ist. Dies geschieht durch den Aufruf von
     \lstinline{ImGui::Begin()} mit entsprechenden Flags, um das Fenster ohne Titel, Größe und
@@ -54,7 +54,7 @@ vorzunehmen.
         Ein Button mit der Beschriftung 'Process' ermöglicht das
         Laden eines neuen Meshes. Beim Klicken auf diesen Button wird der Status
         \lstinline{isLoading} auf true gesetzt und ein neuer Thread gestartet, der das Mesh
-        aus einer .obj-Datei lädt. Der alte Mesh wird durch das neue ersetzt,
+        aus einer .obj-Datei lädt. Das alte Mesh wird durch das neue ersetzt,
         und \lstinline{isLoading} wird auf false zurückgesetzt, sobald der Ladevorgang
         abgeschlossen ist.
     \end{itemize} 
