@@ -5,4 +5,6 @@
 \contentsline {chapter}{\numberline {3}Implementierung des Strip-Zeichners}{5}{chapter.3}%
 \contentsline {chapter}{\numberline {4}Implementierung der Steuerung und der GUI}{7}{chapter.4}%
 \contentsline {chapter}{\numberline {5}Weitere Anpassungen}{9}{chapter.5}%
-\contentsline {chapter}{\numberline {6}Zusammenfassung und Ausblick}{10}{chapter.6}%
+\contentsline {chapter}{\numberline {6}Zusammenfassung und Probleme}{10}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Zusammenfassung}{10}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Probleme}{10}{section.6.2}%

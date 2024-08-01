@@ -446,6 +446,14 @@ INPUT chapters\ZusammenfassungAusblick.tex
 INPUT .\chapters\ZusammenfassungAusblick.tex
 INPUT .\chapters\ZusammenfassungAusblick.tex
 INPUT chapters\ZusammenfassungAusblick.tex
+INPUT D:\MiKTeX\fonts\tfm\public\cm\cmbx12.tfm
+INPUT .\images\Error.PNG
+INPUT .\images\Error.PNG
+INPUT images\Error.PNG
+INPUT .\images\Error.PNG
+INPUT .\images\Error.PNG
+INPUT .\images\Error.PNG
+INPUT .\images\Error.PNG
 INPUT vorlage-projekt.aux
 INPUT .\vorlage-projekt.out
 INPUT .\vorlage-projekt.out
